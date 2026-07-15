@@ -1,0 +1,59 @@
+<!-- templates/usuarios/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - ERP Gestão{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+        <p class="text-muted">Bem-vindo, <strong>{{ user.nome }}</strong>!</p>
+        <hr>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Card Empresa -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-building"></i> Empresa</h5>
+                <p class="card-text">{{ empresa|default:"Não vinculada" }}</p>
+                <a href="{% url 'empresas:lista' %}" class="btn btn-light btn-sm">Gerenciar</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card Usuários -->
+    <div class="col-md-3">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-people"></i> Usuários</h5>
+                <p class="card-text">Gerenciar usuários do sistema</p>
+                <a href="#" class="btn btn-light btn-sm">Ver todos</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Placeholders para futuros módulos -->
+    <div class="col-md-3">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-box-seam"></i> Estoque</h5>
+                <p class="card-text">Módulo em desenvolvimento</p>
+                <span class="badge bg-light text-dark">Em breve</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-cash-stack"></i> Financeiro</h5>
+                <p class="card-text">Módulo em desenvolvimento</p>
+                <span class="badge bg-light text-dark">Em breve</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

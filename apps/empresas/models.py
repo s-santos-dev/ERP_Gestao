@@ -1,7 +1,7 @@
 # apps/empresas/models.py
 from django.db import models
 from apps.core.models import BaseModel, EnderecoMixin, ContatoMixin
-
+from apps.core.utils import limpar_cnpj
 
 class Empresa(BaseModel, EnderecoMixin, ContatoMixin):
     """
@@ -36,6 +36,5 @@ class Empresa(BaseModel, EnderecoMixin, ContatoMixin):
         return self.nome_fantasia or self.nome
 
     def save(self, *args, **kwargs):
-        # Limpar CNPJ (remover pontos, traços, barras)
-        self.cnpj = ''.join(filter(str.isdigit, self.cnpj))
+        self.cnpj = limpar_cnpj(self.cnpj)
         super().save(*args, **kwargs)

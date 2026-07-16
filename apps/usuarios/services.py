@@ -1,5 +1,6 @@
 # apps/usuarios/services.py
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .models import Usuario
 from .selectors import usuario_obter_por_email
@@ -23,27 +24,14 @@ def usuario_criar(
     empresa=None,
     **kwargs
 ) -> Usuario:
-    """
-    Cria um novo usuário com validações.
-    
-    Regras:
-    - E-mail deve ser único
-    - Senha deve ter no mínimo 8 caracteres
-    """
-    if len(password) < 8:
-        raise ValidationError('A senha deve ter no mínimo 8 caracteres.')
-    
+    validate_password(password)  # usa AUTH_PASSWORD_VALIDATORS
+ 
     if usuario_obter_por_email(email):
         raise ValidationError('Já existe um usuário com este e-mail.')
-    
+ 
     usuario = Usuario.objects.create_user(
-        email=email,
-        nome=nome,
-        password=password,
-        empresa=empresa,
-        **kwargs
+        email=email, nome=nome, password=password, empresa=empresa, **kwargs
     )
-    
     return usuario
 
 

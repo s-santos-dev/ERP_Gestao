@@ -1,0 +1,24 @@
+<!-- templates/empresas/confirmar_desativar.html (novo arquivo) -->
+{% extends 'base.html' %}
+ 
+{% block title %}Confirmar desativação - ERP Gestão{% endblock %}
+ 
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4>Desativar empresa</h4>
+    <p>Tem certeza que deseja desativar
+       <strong>{{ empresa }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        Confirmar
+      </button>
+      <a href="{% url 'empresas:lista' %}"
+         class="btn btn-outline-secondary">
+        Cancelar
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

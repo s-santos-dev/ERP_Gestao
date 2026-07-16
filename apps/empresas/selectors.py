@@ -4,7 +4,7 @@ Repository Pattern - Consultas de Empresas.
 Toda consulta ao banco passa por aqui. Views NÃO fazem queries diretas.
 """
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from .models import Empresa
 
 
@@ -33,6 +33,6 @@ def empresa_obter_por_cnpj(cnpj: str) -> Empresa | None:
 def empresa_filtrar_por_nome(nome: str) -> QuerySet[Empresa]:
     """Filtra empresas por nome (case-insensitive)."""
     return Empresa.objects.filter(
-        models.Q(nome__icontains=nome) | models.Q(nome_fantasia__icontains=nome),
+        Q(nome__icontains=nome) | Q(nome_fantasia__icontains=nome),
         ativo=True
     )

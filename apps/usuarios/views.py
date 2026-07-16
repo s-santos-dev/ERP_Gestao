@@ -27,7 +27,7 @@ def login_view(request):
                 login(request, user)
                 user.atualizar_ultimo_acesso()
                 messages.success(request, f'Bem-vindo, {user.get_short_name()}!')
-                return redirect('dashboard')
+                return redirect('usuarios:dashboard')
             else:
                 messages.error(request, 'E-mail ou senha inválidos.')
         else:
@@ -43,7 +43,7 @@ def logout_view(request):
     """View de logout."""
     logout(request)
     messages.info(request, 'Você saiu do sistema.')
-    return redirect('login')
+    return redirect('usuarios:login')
 
 
 @login_required

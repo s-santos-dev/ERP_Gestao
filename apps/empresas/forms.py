@@ -1,7 +1,8 @@
 # apps/empresas/forms.py
 from django import forms
 from .models import Empresa
-
+from django.core.exceptions import ValidationError as DjangoVE
+from apps.core.utils import limpar_cnpj
 
 class EmpresaForm(forms.ModelForm):
     """Formulário de criação/edição de empresa."""
@@ -21,8 +22,7 @@ class EmpresaForm(forms.ModelForm):
         }
     
     def clean_cnpj(self):
-        cnpj = self.cleaned_data['cnpj']
-        cnpj_limpo = ''.join(filter(str.isdigit, cnpj))
-        if len(cnpj_limpo) != 14:
-            raise forms.ValidationError('CNPJ deve conter 14 dígitos.')
-        return cnpj_limpo
+        try:
+            return limpar_cnpj(self.cleaned_data['cnpj'])
+        except ValueError as e:
+            raise forms.ValidationError(str(e))

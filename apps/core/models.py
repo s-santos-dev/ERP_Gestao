@@ -8,7 +8,11 @@ from django.db import models
 from django.conf import settings
 import uuid
 
-
+class TenantManager(models.Manager):
+    """Obriga o uso explícito de uma empresa nas consultas."""
+    def para_empresa(self, empresa):
+        return self.get_queryset().filter(empresa=empresa)
+    
 class BaseModel(models.Model):
     """
     Modelo abstrato base para TODOS os modelos do ERP.
@@ -25,7 +29,7 @@ class BaseModel(models.Model):
         on_delete=models.CASCADE,
         related_name='%(class)s_empresa',
         verbose_name='Empresa',
-        null=True, blank=True  # Permitir null temporariamente para superusuários
+        null=False, blank=False
     )
     
     criado_por = models.ForeignKey(

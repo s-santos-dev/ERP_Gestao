@@ -14,7 +14,7 @@ from .selectors import usuario_listar_por_empresa, usuario_obter_por_email
 def login_view(request):
     """View de login."""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('usuarios:dashboard')
     
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)

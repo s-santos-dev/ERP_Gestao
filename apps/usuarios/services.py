@@ -25,12 +25,16 @@ def usuario_criar(
     **kwargs
 ) -> Usuario:
     validate_password(password)  # usa AUTH_PASSWORD_VALIDATORS
- 
+
     if usuario_obter_por_email(email):
         raise ValidationError('Já existe um usuário com este e-mail.')
- 
+
     usuario = Usuario.objects.create_user(
-        email=email, nome=nome, password=password, empresa=empresa, **kwargs
+        email=email,
+        nome=nome,
+        password=password,
+        empresa=empresa,
+        **kwargs,
     )
     return usuario
 

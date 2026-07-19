@@ -49,7 +49,8 @@ def logout_view(request):
 @login_required
 def dashboard_view(request):
     """Dashboard principal."""
+    empresa = getattr(request.user, 'empresa', None)
     return render(request, 'usuarios/dashboard.html', {
         'usuario': request.user,
-        'empresa': request.user.empresa,
+        'empresa': empresa,
     })

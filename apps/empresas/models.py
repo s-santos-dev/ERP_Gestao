@@ -1,9 +1,9 @@
-# apps/empresas/models.py
 from django.db import models
-from apps.core.models import BaseModel, EnderecoMixin, ContatoMixin
+from apps.core.models import BaseModel, EnderecoMixin, ContatoMixin, AuditavelMixin
 from apps.core.utils import limpar_cnpj
 
-class Empresa(BaseModel, EnderecoMixin, ContatoMixin):
+
+class Empresa(BaseModel, EnderecoMixin, ContatoMixin, AuditavelMixin):
     """
     Modelo de Empresa (Tenant).
     Cada empresa é um tenant isolado. Todos os dados pertencem a uma empresa.

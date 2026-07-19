@@ -1,4 +1,3 @@
-# apps/usuarios/models.py
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -11,24 +10,25 @@ from .managers import UsuarioManager
 class Usuario(AbstractBaseUser, PermissionsMixin, BaseModel):
     """
     Modelo customizado de usuário.
-    Herda de BaseModel para ter UUID, timestamps, empresa e auditoria.
+    Herda de BaseModel para ter UUID, timestamps, empresa.
+    NÃO herda AuditavelMixin para evitar auto-referência (ForeignKey para si mesmo).
     """
     email = models.EmailField(_('endereço de e-mail'), unique=True)
     nome = models.CharField(_('nome completo'), max_length=255)
     avatar = models.ImageField(upload_to='usuarios/avatars/', blank=True)
-    
+
     # Campos de controle
     is_staff = models.BooleanField(_('staff status'), default=False)
     is_active = models.BooleanField(_('ativo'), default=True)
     is_superuser = models.BooleanField(_('superusuário'), default=False)
     date_joined = models.DateTimeField(_('data de cadastro'), default=timezone.now)
     ultimo_acesso = models.DateTimeField(_('último acesso'), null=True, blank=True)
-    
+
     # Campos de perfil
     cargo = models.CharField(max_length=100, blank=True, verbose_name='Cargo')
     departamento = models.CharField(max_length=100, blank=True, verbose_name='Departamento')
     telefone = models.CharField(max_length=20, blank=True, verbose_name='Telefone')
-    
+
     # Permissões por módulo (além do Django groups/permissions)
     pode_vender = models.BooleanField(default=False, verbose_name='Pode Vender')
     pode_comprar = models.BooleanField(default=False, verbose_name='Pode Comprar')

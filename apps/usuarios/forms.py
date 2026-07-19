@@ -35,7 +35,7 @@ class UsuarioCriarForm(forms.ModelForm):
     
     class Meta:
         model = Usuario
-        fields = ['email', 'nome', 'cargo', 'departamento', 'telefone', 'empresa']
+        fields = ['email', 'nome', 'cargo', 'departamento', 'telefone']
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'nome': forms.TextInput(attrs={'class': 'form-control'}),

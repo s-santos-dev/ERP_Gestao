@@ -1,4 +1,3 @@
-# apps/core/models.py
 """
 Modelos base e mixins reutilizáveis em todo o ERP.
 Todo modelo do ERP deve herdar de BaseModel.
@@ -8,30 +7,46 @@ from django.db import models
 from django.conf import settings
 import uuid
 
+
 class TenantManager(models.Manager):
     """Obriga o uso explícito de uma empresa nas consultas."""
     def para_empresa(self, empresa):
         return self.get_queryset().filter(empresa=empresa)
-    
+
+
 class BaseModel(models.Model):
     """
     Modelo abstrato base para TODOS os modelos do ERP.
-    Fornece: id (UUID), timestamps, soft-delete, empresa e usuário.
+    Fornece: id (UUID), timestamps, soft-delete, empresa.
+    NÃO inclui criado_por/atualizado_por — use AuditavelMixin para isso.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
     atualizado_em = models.DateTimeField(auto_now=True, verbose_name='Atualizado em')
     ativo = models.BooleanField(default=True, verbose_name='Ativo')
     
-    # Relacionamentos obrigatórios para multi-tenancy e auditoria
+    # Multi-tenancy: toda tabela pertence a uma empresa
     empresa = models.ForeignKey(
         'empresas.Empresa',
         on_delete=models.CASCADE,
         related_name='%(class)s_empresa',
         verbose_name='Empresa',
-        null=False, blank=False
+        null=True, blank=True  # null temporariamente para superuser criar primeira empresa
     )
-    
+
+    class Meta:
+        abstract = True
+        ordering = ['-criado_em']
+
+    def __str__(self):
+        return f"{self.__class__.__name__} ({self.id})"
+
+
+class AuditavelMixin(models.Model):
+    """
+    Mixin para modelos que precisam rastrear QUEM criou/atualizou.
+    NÃO usar no modelo Usuario (evita auto-referência circular).
+    """
     criado_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -50,10 +65,6 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['-criado_em']
-
-    def __str__(self):
-        return f"{self.__class__.__name__} ({self.id})"
 
 
 class EnderecoMixin(models.Model):

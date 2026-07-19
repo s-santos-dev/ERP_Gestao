@@ -139,7 +139,13 @@ ERP_Gestao/
    python manage.py runserver --settings=config.settings.development
    ```
 
-9. **Acesse a aplicação**
+9. **Rode o script de carga de dados**
+
+    ```bash
+    python script/empresas_seed.py
+    ```
+
+10. **Acesse a aplicação**
 
    - Aplicação: http://127.0.0.1:8000/
    - Login: http://127.0.0.1:8000/login/

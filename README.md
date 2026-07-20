@@ -133,17 +133,17 @@ ERP_Gestao/
    python manage.py createsuperuser --settings=config.settings.development
    ```
 
-8. **Rode o servidor de desenvolvimento**
-
-   ```bash
-   python manage.py runserver --settings=config.settings.development
-   ```
-
-9. **Rode o script de carga de dados**
+8. **Rode o script de carga de dados**
 
     ```bash
     python script/empresas_seed.py
     ```
+
+9. **Rode o servidor de desenvolvimento**
+
+   ```bash
+   python manage.py runserver --settings=config.settings.development
+   ```
 
 10. **Acesse a aplicação**
 
